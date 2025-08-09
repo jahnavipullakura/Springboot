@@ -1,0 +1,6 @@
+projectKey=springboot-demo
+serverUrl=http://3.111.168.72:9000
+serverVersion=10.6.0.92116
+dashboardUrl=http://3.111.168.72:9000/dashboard?id=springboot-demo
+ceTaskId=5292fa85-4ba2-47d6-b858-dbc78654019e
+ceTaskUrl=http://3.111.168.72:9000/api/ce/task?id=5292fa85-4ba2-47d6-b858-dbc78654019e
