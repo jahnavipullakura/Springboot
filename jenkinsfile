@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+    triggers{
+        githubPush()
+    }
+    tools{
+        maven 'Maven'
+    }
+    environment {
+        SONARQUBE_URL = 'http://13.39.108.123:9000'
+        SONARQUBE_TOKEN = credentials ('sonarqube_id')
+    }
+    stages {
+        stage('Checkout'){
+            steps{
+                git branch: 'main', credentialsId: 'git-creds', url: 'https://github.com/jahnavipullakura/SpringbootNew'
+                sh 'ls -la'
+            }
+        }
+        stage('Build'){
+            steps{
+                sh 'mvn clean install'
+            }
+        }
+        stage('Package'){
+            steps{
+                sh 'mvn package'
+            }
+        }
+        stage('SonarQube Analysis'){
+            steps{
+                sh '''
+                mvn sonar:sonar \
+                  -Dsonar.projectKey=Simple-hello-Jahnavi \
+                  -Dsonar.host.url=http://13.39.108.123:9000 \
+                  -Dsonar.login=$SONARQUBE_TOKEN
+                '''
+            }
+        }
+        stage('Deploy'){
+            steps{
+                sh '''
+                nohup java -jar target/Simple-hello-Jahnavi-1.0.0.jar --server.port=9090 > app.log 2>&1 &
+                '''
+            }
+        }
+    }
+}
+      
